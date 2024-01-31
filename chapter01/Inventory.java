@@ -10,46 +10,47 @@ public class Inventory {
         guitars = new LinkedList();
     }
 
-    public void addGuitar(String serialNumber, double price, Builder builder, String model, Type type, Wood backWood, Wood topWood){
+    public void addGuitar(String serialNumber, double price, Builder builder, String model, Type type, Wood backWood, Wood topWood) {
         Guitar guitar = new Guitar(serialNumber, price, builder, model, type, backWood, topWood);
         guitars.add(guitar);
     }
 
-    public Guitar getGuitar(String serialNumber){
-        for (Iterator i = guitars.iterator(); i.hasNext();){
-            Guitar guitar = (Guitar)i.next();
-            if (guitar.getSerialNumber().equals(serialNumber)){
+    public Guitar getGuitar(String serialNumber) {
+        for (Iterator i = guitars.iterator(); i.hasNext(); ) {
+            Guitar guitar = (Guitar) i.next();
+            if (guitar.getSerialNumber().equals(serialNumber)) {
                 return guitar;
             }
         }
         return null;
     }
 
-    public List search(Guitar searchGuitar){
+    public List search(GuitarSpec searchSpec) {
         List matchingGuitars = new LinkedList();
-        for (Iterator i = guitars.iterator(); i.hasNext();){
-            Guitar guitar = (Guitar)i.next();
+        for (Iterator i = guitars.iterator(); i.hasNext(); ) {
+            Guitar guitar = (Guitar) i.next();
+            GuitarSpec guitarSpec = guitar.getSpec();
 
             // ignore serial number since that's unique
             // Ignore price since that's unique
-            if (searchGuitar.getBuilder() != guitar.getBuilder())
+            if (searchSpec.getBuilder() != guitarSpec.getBuilder())
                 continue;
 
-            String model = searchGuitar.getModel().toLowerCase();
-            if ((model != null) && (!model.equals("")) && (!model.equals(guitar.getModel().toLowerCase()))){
-                continue;
-            }
-
-            if (searchGuitar.getType() != guitar.getType()){
+            String model = searchSpec.getModel().toLowerCase();
+            if ((model != null) && (!model.equals("")) && (!model.equals(guitarSpec.getModel().toLowerCase()))) {
                 continue;
             }
 
-
-            if (searchGuitar.getBackWood() != guitar.getBackWood()){
+            if (searchSpec.getType() != guitarSpec.getType()) {
                 continue;
             }
 
-            if (searchGuitar.getTopWood() != guitar.getTopWood()){
+
+            if (searchSpec.getBackWood() != guitarSpec.getBackWood()) {
+                continue;
+            }
+
+            if (searchSpec.getTopWood() != guitarSpec.getTopWood()) {
                 continue;
             }
 
